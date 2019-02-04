@@ -1,0 +1,24 @@
+version: '3'
+services:
+  react-app:
+    build:
+      # specifies where to look for project files
+      context: .
+      # specifies which Dockerfile to use to build the image
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # tells docker to not map this folder back to the local machine
+      - /opt/app/node_modules
+      # maps current working dir on local to /opt/app in container
+      - .:/opt/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /opt/app/node_modules
+      - .:/opt/app
+    # overrides default startup command
+    command: ["npm", "run", "test"]
