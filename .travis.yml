@@ -1,6 +1,8 @@
 # tell travis we need sudo permission to execute build
 sudo: required
 
+language: generic
+
 # specify that we need docker running
 services:
   - docker
@@ -9,3 +11,9 @@ services:
 before_install:
   # build from dev Dockerfile, and tag image
   - docker build -t dgoncharov/docker-react -f Dockerfile.dev .
+
+# commands to be run for test suite
+# travis will monitor status codes returned from each step
+script:
+  # run test suite, and return coverage results for travis
+  - docker run dgoncharov/docker-react npm run test -- --coverage
