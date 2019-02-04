@@ -1,0 +1,11 @@
+# tell travis we need sudo permission to execute build
+sudo: required
+
+# specify that we need docker running
+services:
+  - docker
+
+# things that will be done before tests are ran
+before_install:
+  # build from dev Dockerfile, and tag image
+  - docker build -t dgoncharov/docker-react -f Dockerfile.dev .
