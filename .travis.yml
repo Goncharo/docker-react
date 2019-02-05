@@ -1,6 +1,7 @@
 # tell travis we need sudo permission to execute build
 sudo: required
 
+# specify generic language since we're using docker
 language: generic
 
 # specify that we need docker running
@@ -17,3 +18,25 @@ before_install:
 script:
   # run test suite, and return coverage results for travis
   - docker run dgoncharov/docker-react npm run test -- --coverage
+
+deploy:
+  # use AWS elastic beanstalk to deploy app
+  provider: elasticbeanstalk
+  # the region AWS app was created in, from AWS URL
+  region: "us-east-2"
+  # name of the AWS app
+  app: "docker-react"
+  # environment name (top of AWS dashboard)
+  env: "DockerReact-env"
+  # zips up source code, and uploads to S3,
+  # then tells AWS EB to use this code to deploy app
+  # (search for S3 buckets in AWS with elasticbeanstalk name)
+  bucket_name: "elasticbeanstalk-us-east-2-758672168977"
+  # the folder which the zip will get placed (app name)
+  bucket_path: "docker-react"
+  # deploy anytime we push code to the master branch
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access: 
+    secure: "$AWS_SECRET_KEY"
