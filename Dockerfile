@@ -14,6 +14,8 @@ RUN npm run build
 
 # don't need to specify the stage name here
 FROM nginx
+# tells elasticbeanstalk to use map port 80
+EXPOSE 80
 # copy build files from build stage
 COPY --from=builder /opt/app/build /usr/share/nginx/html
 # default command of nginx container will start nginx
